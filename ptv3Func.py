@@ -3,6 +3,7 @@ import os
 nameFile = "bin/zzNameFile.txt"
 exitOptionList = ['x','q','exit','quit']
 exitPromptText = "Exit (x,q,exit,quit) or Continue: "
+divider = '*'*50
 
 def initBinFolder():
     try:
@@ -52,6 +53,15 @@ def getNotWatchedList(fRoot,watched):
     
     return allFiles
 
+# def getFullList(fRoot):
+#     allFiles = []
+#     for root, dirs, files in os.walk(fRoot):
+#         for f in files:
+#             if('desktop.ini' in f):
+#                 continue
+#             allFiles.append(fixPathAddress(os.path.join(root, f)))
+#     return allFiles
+
 def writeInTrackingFile(file,item):
     fh = open(file,"a")
     fh.write(item+"\n")
@@ -83,3 +93,30 @@ def findIndexOfFile(list,item):
 
 def exitWait():
     input("Press any key to Exit/Quit: ")
+
+def getAllSubFolders(fRoot):
+    allSubFolders = []
+    with os.scandir(fRoot) as entries:
+        for entry in entries:
+            if entry.is_dir():
+                allSubFolders.append(entry.name)
+    return allSubFolders
+
+def getTotalNoOfFilesInFolder(fRoot):
+    count = 0
+    with os.scandir(fRoot) as entries:
+        for entry in entries:
+            count+=1
+    return count
+
+def getTotalNoOfFilesWatched(fRoot,folderName,watchedList):
+    count = 0
+    for item in watchedList:
+        folderNameInItem = item.split(fRoot)[1].split('/')[1]
+        if folderNameInItem == folderName:
+            count+=1
+    return count
+
+def getOverallWatchedPercentage(watched,notWatched):
+    totalFiles = len(watched)+len(notWatched)
+    return round((len(watched)/totalFiles)*100,2)
