@@ -53,15 +53,6 @@ def getNotWatchedList(fRoot,watched):
     
     return allFiles
 
-# def getFullList(fRoot):
-#     allFiles = []
-#     for root, dirs, files in os.walk(fRoot):
-#         for f in files:
-#             if('desktop.ini' in f):
-#                 continue
-#             allFiles.append(fixPathAddress(os.path.join(root, f)))
-#     return allFiles
-
 def writeInTrackingFile(file,item):
     fh = open(file,"a")
     fh.write(item+"\n")
