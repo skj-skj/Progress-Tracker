@@ -1,4 +1,5 @@
 import os
+import re
 
 nameFile = "bin/zzNameFile.txt"
 exitOptionList = ['x','q','exit','quit']
@@ -14,6 +15,19 @@ def initBinFolder():
 def initTrackerFile():
     fh = open(nameFile,"a+")
     fh.close()
+
+def naturalSort(l):
+    def convert(x):
+        return int(x) if x.isdigit() else x.lower()
+    def alphanumKey(string):
+        return [convert(x) for x in re.split('([0-9]+)',string)]
+    l.sort(key=alphanumKey)
+    return l
+
+# def nsort(l):
+#     convert = lambda text: int(text) if text.isdigit() else text.lower()
+#     alphanumKey = lambda key: [convert(c) for c in re.split('([0-9]+)',key)]
+#     l.sort(key=alphanumKey)
 
 def writeInTracker(fName):
     fh = open(nameFile,"a+")
@@ -50,8 +64,7 @@ def getNotWatchedList(fRoot,watched):
                 continue
             if fixPathAddress(os.path.join(root, f)) not in watched:
                 allFiles.append(fixPathAddress(os.path.join(root, f)))
-    
-    return allFiles
+    return naturalSort(allFiles)
 
 def writeInTrackingFile(file,item):
     fh = open(file,"a")
@@ -83,7 +96,7 @@ def findIndexOfFile(list,item):
             return i
 
 def exitWait():
-    input("Press any key to Exit/Quit: ")
+    input("Hit Enter to Exit/Quit: ")
 
 def getAllSubFolders(fRoot):
     allSubFolders = []
@@ -91,7 +104,7 @@ def getAllSubFolders(fRoot):
         for entry in entries:
             if entry.is_dir():
                 allSubFolders.append(entry.name)
-    return allSubFolders
+    return naturalSort(allSubFolders)
 
 def getTotalNoOfFilesInFolder(fRoot):
     count = 0
