@@ -1,6 +1,4 @@
-import os
 import sys
-
 from ptv3Func import *
     
 initBinFolder()

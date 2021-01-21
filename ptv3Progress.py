@@ -1,5 +1,4 @@
 import sys
-import os
 from ptv3Func import *
 
 menuCore();
