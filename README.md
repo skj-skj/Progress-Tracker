@@ -22,7 +22,7 @@
 
 ### B) Already Created New Entry
 1. run `ptv3.py`
-2. Enter number in front of you desire Series/Movies/Courses you want to watch ex: `1` , `2` etc. <br/>
+2. Enter number in front of your desire Series/Movies/Courses you want to watch ex: `1` , `2` etc. <br/>
    or Enter `N` for new entry (goto A.)<br/><br/>
 3. Done, Now it will show the episode list one by one.<br/>
    i. enter `0` to watch and it will open in default video player.<br/>
@@ -34,18 +34,23 @@
 
 <br/>
 
-### C) To Forcefully Update To a Fixed episode
+### C) To see the Progress Percentage(%)
+1. run `ptv3Progress.py`
+2. Enter number in front of your desire Series/Movies/Courses ex: `1` , `2` etc. <br/>
+3. Done.
+
+### D) To Forcefully Update To a Fixed episode
 1. run `ptv3ForceUpdator.py`
-2. Enter number in front of you desire Series/Movies/Courses you want to forcefully updated it ex: `1` , `2` etc. <br/>
+2. Enter number in front of your desire Series/Movies/Courses you want to forcefully updated it ex: `1` , `2` etc. <br/>
    or Enter `N` for new entry (goto A - 1. to 4.)
 3. Enter last episode/file you watched
     - Example:<br/>
       Last Watched File = `foo Anime Episode 20.mkv`
 4. Done, Series/Movies/Courses are forcefully updated till the last episode/file entered
 
-### D) To Delete 
+### E) To Delete 
 1. run `ptv3Delete.py`
-2. Enter number in front of you desire Series/Movies/Courses to Delete ex: `1` , `2` etc.
+2. Enter number in front of your desire Series/Movies/Courses to Delete ex: `1` , `2` etc.
 3. Enter `Y` in Confirm prompt
 4. Delete
 
