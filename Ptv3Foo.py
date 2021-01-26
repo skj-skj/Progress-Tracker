@@ -1,10 +1,16 @@
 import os
 import re
+import SortFoo
 
-nameFile = "bin/zzNameFile.txt"
+recordFile = "bin/zzRecordFile.txt"
 exitOptionList = ['x','q','exit','quit']
 exitPromptText = "Exit (x,q,exit,quit) or Continue: "
 divider = '*'*50
+divider2 = '-'*50
+enterValidOptionPrompt = "Please Enter Valid Option!"
+
+def removeAllSlashes(s):
+    return ''.join(s.split('/'))
 
 def initBinFolder():
     try:
@@ -12,13 +18,13 @@ def initBinFolder():
     except:
         return
 
-def initTrackerFile():
-    fh = open(nameFile,"a+")
+def initRecordFile():
+    fh = open(recordFile,"a+")
     fh.close()
 
 def naturalSort(l):
     def convert(x):
-        return int(x) if x.isdigit() else x.lower()
+        return int(x) if x.isdigit() else removeAllSlashes(x.lower())
     def alphanumKey(string):
         return [convert(x) for x in re.split('([0-9]+)',string)]
     l.sort(key=alphanumKey)
@@ -29,8 +35,16 @@ def naturalSort(l):
 #     alphanumKey = lambda key: [convert(c) for c in re.split('([0-9]+)',key)]
 #     l.sort(key=alphanumKey)
 
-def writeInTracker(fName):
-    fh = open(nameFile,"a+")
+def naturalSortAlternate(l): #This Natural Sort to ignore '/' in the sorting comparisons
+    def convert(x):
+        return int(x) if x.isdigit() else x.lower() if x!='/' else ''
+    def alphanumKey(string):
+        return [convert(x) for x in re.split('([0-9]+)',string)]
+    l.sort(key=alphanumKey)
+    return l
+
+def writeInRecordFile(fName):
+    fh = open(recordFile,"a+",encoding="utf-8")
     fh.write(fName+'\n')
     fh.close()
 
@@ -38,7 +52,7 @@ def fixPathAddress(path):
     return path.replace("\\","/").strip()
 
 def getRootAddress(file):
-    fh = open(file,"r")
+    fh = open(file,"r",encoding="utf-8")
     fRoot = fh.readlines()[0]
     fh.close()
     return fRoot.strip()
@@ -50,7 +64,7 @@ def getFileName(fName):
                 return "./bin/"+entry.name
     
 def getWatchedList(file):
-    fh = open(file,"r")
+    fh = open(file,"r",encoding="utf-8")
     watchList = fh.readlines()[1:]
     watchList = [item.strip() for item in watchList]
     fh.close()
@@ -64,15 +78,15 @@ def getNotWatchedList(fRoot,watched):
                 continue
             if fixPathAddress(os.path.join(root, f)) not in watched:
                 allFiles.append(fixPathAddress(os.path.join(root, f)))
-    return naturalSort(allFiles)
+    return SortFoo.naturalSortForTheFileLocation(allFiles,fRoot)
 
 def writeInTrackingFile(file,item):
-    fh = open(file,"a")
+    fh = open(file,"a",encoding="utf-8")
     fh.write(item+"\n")
     fh.close()
 
 def menuCore():
-    fh = open(nameFile,"r")
+    fh = open(recordFile,"r",encoding="utf-8")
     allTrackers = fh.readlines()
     for i in range(len(allTrackers)):
         print(f'{i+1}. {allTrackers[i].strip()}')
@@ -80,14 +94,14 @@ def menuCore():
 def menu():
     menuCore()
     print('N. New Entry')
-    return input("Enter Your Choice: ")
+    return input("Enter Your Choice or (x) to exit: ")
 
 def deleteMenu():
     menuCore()
-    return input("Enter Your Choice (to Delete):")
+    return input("Enter Your Choice (to Delete) or (x) to exit:")
 
-def getAllTrackerNameList():
-    fh = open(nameFile,"r")
+def getAllNameFromRecord():
+    fh = open(recordFile,"r",encoding="utf-8")
     return [item.strip() for item in fh.readlines()]
 
 def findIndexOfFile(list,item):
@@ -104,7 +118,8 @@ def getAllSubFolders(fRoot):
         for entry in entries:
             if entry.is_dir():
                 allSubFolders.append(entry.name)
-    return naturalSort(allSubFolders)
+    return SortFoo.naturalSortForTheFileLocation(allSubFolders,fRoot)
+    # return naturalSortAlternate(allSubFolders)
 
 def getTotalNoOfFilesInFolder(fRoot):
     count = 0
@@ -124,3 +139,10 @@ def getTotalNoOfFilesWatched(fRoot,folderName,watchedList):
 def getOverallWatchedPercentage(watched,notWatched):
     totalFiles = len(watched)+len(notWatched)
     return round((len(watched)/totalFiles)*100,2)
+
+def exitWithPrompt():
+    option = input(exitPromptText)
+    if option in exitOptionList:
+        return True
+    else:
+        return False
