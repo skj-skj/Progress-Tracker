@@ -78,7 +78,8 @@ def getNotWatchedList(fRoot,watched):
                 continue
             if fixPathAddress(os.path.join(root, f)) not in watched:
                 allFiles.append(fixPathAddress(os.path.join(root, f)))
-    return SortFoo.naturalSortForTheFileLocation(allFiles,fRoot)
+    SortFoo.naturalSortForTheFileLocation(allFiles,fRoot)
+    return allFiles
 
 def writeInTrackingFile(file,item):
     fh = open(file,"a",encoding="utf-8")
@@ -118,7 +119,8 @@ def getAllSubFolders(fRoot):
         for entry in entries:
             if entry.is_dir():
                 allSubFolders.append(entry.name)
-    return SortFoo.naturalSortForTheFileLocation(allSubFolders,fRoot)
+    SortFoo.naturalSortForTheFileLocation(allSubFolders,fRoot)
+    return allSubFolders
     # return naturalSortAlternate(allSubFolders)
 
 def getTotalNoOfFilesInFolder(fRoot):
