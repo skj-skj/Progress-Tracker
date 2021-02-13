@@ -1,12 +1,13 @@
 import os
 import sys
+import Ptv3Const as ptv3
 from Ptv3Foo import *
 
 while (True):
     menuOption = deleteMenu()
 
     #To check for Exit Option
-    if menuOption in exitOptionList:
+    if menuOption in ptv3.exitOptionList:
         sys.exit()
         
     NamesInRecordFile = getAllNameFromRecord()
@@ -16,10 +17,10 @@ while (True):
     if (menuOption.isdigit()):
         menuOption = int(menuOption)
         if (menuOption<1 or menuOption>len(NamesInRecordFile)):
-            print(enterValidOptionPrompt)
+            print(ptv3.enterValidOptionPrompt)
             continue
     else:
-        print(enterValidOptionPrompt)
+        print(ptv3.enterValidOptionPrompt)
         continue
 
     fName = getAllNameFromRecord()[int(menuOption)-1]
@@ -29,7 +30,7 @@ while (True):
     if confirm == 'y':
         os.remove(getFileName(fName))
         trackerNameList = getAllNameFromRecord()
-        fh = open(recordFile,"w")
+        fh = open(ptv3.recordFile,"w")
         for item in trackerNameList:
             if item == fName:
                 continue

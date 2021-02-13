@@ -1,16 +1,16 @@
 import os
 import sys
-
+import Ptv3Const as ptv3
 from Ptv3Foo import *
     
-initBinFolder()
+initDataFolder()
 initRecordFile()
 
 while (True):
     menuOption = menu()
 
     #To check for Exit Option
-    if menuOption in exitOptionList:
+    if menuOption in ptv3.exitOptionList:
         sys.exit()
         
     NamesInRecordFile = getAllNameFromRecord()
@@ -20,11 +20,11 @@ while (True):
     if (menuOption.isdigit()):
         menuOption = int(menuOption)
         if (menuOption<1 or menuOption>len(NamesInRecordFile)):
-            print(enterValidOptionPrompt)
+            print(ptv3.enterValidOptionPrompt)
             continue
     #to check user enter valid option (option other than 'n')
     elif (not menuOption.lower() == 'n'):
-        print(enterValidOptionPrompt)
+        print(ptv3.enterValidOptionPrompt)
         continue
 
 
@@ -39,12 +39,12 @@ while (True):
         inSeasoned = input("Seasoned / Have Folders (Y/N): ").upper() 
         inSeasoned = 'N' if inSeasoned != 'Y' else inSeasoned
 
-        #Create a .txt in bin folder and write the Main Folder Location 'fRoot' in the first line of the .txt file
-        fh = open(f"./bin/{fName}-{inSeasoned}.txt","a+")
+        #Create a .txt in data folder and write the Main Folder Location 'fRoot' in the first line of the .txt file
+        fh = open(f"./{ptv3.dataFolderName}/{fName}-{inSeasoned}.txt","a+")
         fh.write(fRoot+"\n")
         fh.close()
 
-        #Write the fName in NameFile.txt which keeps record of the .txt file in bin folder
+        #Write the fName in NameFile.txt which keeps record of the .txt file in data folder
         writeInRecordFile(fName)
 
     else:
@@ -52,7 +52,7 @@ while (True):
             
    
     #fName is name of the Main Folder
-    fNameFile = getFileName(fName) #fNameFile is location of .txt file of the fName stored in bin folder
+    fNameFile = getFileName(fName) #fNameFile is location of .txt file of the fName stored in data folder
     fRoot = getRootAddress(fNameFile) #fRoot is the location of the Main Folder stored in the first line of the .txt file (fNameFile)
     watchedList = getWatchedList(fNameFile) #gets the watchList from the .txt file (fNameFile) excluding first line
     notWatchedList = getNotWatchedList(fRoot,watchedList) # gets notWatchList by scanning the fRoot location in the PC and comparing to watchList
@@ -63,7 +63,7 @@ while (True):
         print(item.split("/")[-1])
 
 
-    print(divider) #****
+    print(ptv3.divider) #****
 
     #iterate for every item in notWatchList
     for item in notWatchedList:
@@ -90,7 +90,7 @@ while (True):
                     break
 
                 #if user choses to exit
-                elif choice.lower() in exitOptionList:
+                elif choice.lower() in ptv3.exitOptionList:
                      break
                 
                 #anything else will result to nothing
@@ -100,13 +100,13 @@ while (True):
                 print(e)
                 continue
         #if user choses to exit it will break from the loop
-        if (choice.lower() in exitOptionList):
+        if (choice.lower() in ptv3.exitOptionList):
             break
         else:
             continue
 
     # print("----------Watchlist is Completed----------")
-    print(divider2) #----
+    print(ptv3.divider2) #----
 
     #Show prompt to exit the system
     if exitWithPrompt():

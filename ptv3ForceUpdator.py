@@ -1,7 +1,8 @@
 import sys
+import Ptv3Const as ptv3
 from Ptv3Foo import *
     
-initBinFolder()
+initDataFolder()
 initRecordFile()
 
 
@@ -11,7 +12,7 @@ while (True):
     menuOption = menu()
 
     #To check for Exit Option
-    if menuOption in exitOptionList:
+    if menuOption in ptv3.exitOptionList:
         sys.exit()
         
     NamesInRecordFile = getAllNameFromRecord()
@@ -21,11 +22,11 @@ while (True):
     if (menuOption.isdigit()):
         menuOption = int(menuOption)
         if (menuOption<1 or menuOption>len(NamesInRecordFile)):
-            print(enterValidOptionPrompt)
+            print(ptv3.enterValidOptionPrompt)
             continue
     #to check user enter valid option (option other than 'n')
     elif (not menuOption.lower() == 'n'):
-        print(enterValidOptionPrompt)
+        print(ptv3.enterValidOptionPrompt)
         continue
 
 

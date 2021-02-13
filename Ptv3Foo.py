@@ -1,25 +1,27 @@
 import os
 import re
 import SortFoo
+import Ptv3Const as ptv3
+# from Ptv3Const import recordFile,exitOptionList,exitPromptText,divider,divider2,enterValidOptionPrompt
 
-recordFile = "bin/zzRecordFile.txt"
-exitOptionList = ['x','q','exit','quit']
-exitPromptText = "Exit (x,q,exit,quit) or Continue: "
-divider = '*'*50
-divider2 = '-'*50
-enterValidOptionPrompt = "Please Enter Valid Option!"
+# recordFile = "bin/zzRecordFile.txt"
+# exitOptionList = ['x','q','exit','quit']
+# exitPromptText = "Exit (x,q,exit,quit) or Continue: "
+# divider = '*'*50
+# divider2 = '-'*50
+# enterValidOptionPrompt = "Please Enter Valid Option!"
 
 def removeAllSlashes(s):
     return ''.join(s.split('/'))
 
-def initBinFolder():
+def initDataFolder():
     try:
-        os.mkdir("bin")
+        os.mkdir(ptv3.dataFolderName)
     except:
         return
 
 def initRecordFile():
-    fh = open(recordFile,"a+")
+    fh = open(ptv3.recordFile,"a+")
     fh.close()
 
 def naturalSort(l):
@@ -28,7 +30,6 @@ def naturalSort(l):
     def alphanumKey(string):
         return [convert(x) for x in re.split('([0-9]+)',string)]
     l.sort(key=alphanumKey)
-    return l
 
 # def nsort(l):
 #     convert = lambda text: int(text) if text.isdigit() else text.lower()
@@ -44,7 +45,7 @@ def naturalSortAlternate(l): #This Natural Sort to ignore '/' in the sorting com
     return l
 
 def writeInRecordFile(fName):
-    fh = open(recordFile,"a+",encoding="utf-8")
+    fh = open(ptv3.recordFile,"a+",encoding="utf-8")
     fh.write(fName+'\n')
     fh.close()
 
@@ -58,10 +59,10 @@ def getRootAddress(file):
     return fRoot.strip()
 
 def getFileName(fName):
-    with os.scandir('./bin/') as entries:
+    with os.scandir(f'./{ptv3.dataFolderName}/') as entries:
         for entry in entries:
             if fName == (entry.name).split('-N')[0] or fName == (entry.name).split('-Y')[0]:
-                return "./bin/"+entry.name
+                return f"./{ptv3.dataFolderName}/"+entry.name
     
 def getWatchedList(file):
     fh = open(file,"r",encoding="utf-8")
@@ -87,7 +88,7 @@ def writeInTrackingFile(file,item):
     fh.close()
 
 def menuCore():
-    fh = open(recordFile,"r",encoding="utf-8")
+    fh = open(ptv3.recordFile,"r",encoding="utf-8")
     allTrackers = fh.readlines()
     for i in range(len(allTrackers)):
         print(f'{i+1}. {allTrackers[i].strip()}')
@@ -102,7 +103,7 @@ def deleteMenu():
     return input("Enter Your Choice (to Delete) or (x) to exit:")
 
 def getAllNameFromRecord():
-    fh = open(recordFile,"r",encoding="utf-8")
+    fh = open(ptv3.recordFile,"r",encoding="utf-8")
     return [item.strip() for item in fh.readlines()]
 
 def findIndexOfFile(list,item):
@@ -113,13 +114,15 @@ def findIndexOfFile(list,item):
 def exitWait():
     input("Hit Enter to Exit/Quit: ")
 
+#This Function only returns list of subfolders
 def getAllSubFolders(fRoot):
     allSubFolders = []
     with os.scandir(fRoot) as entries:
         for entry in entries:
             if entry.is_dir():
                 allSubFolders.append(entry.name)
-    SortFoo.naturalSortForTheFileLocation(allSubFolders,fRoot)
+    # SortFoo.naturalSortForTheFileLocation(allSubFolders,fRoot)
+    naturalSort(allSubFolders)
     return allSubFolders
     # return naturalSortAlternate(allSubFolders)
 
@@ -143,8 +146,8 @@ def getOverallWatchedPercentage(watched,notWatched):
     return round((len(watched)/totalFiles)*100,2)
 
 def exitWithPrompt():
-    option = input(exitPromptText)
-    if option in exitOptionList:
+    option = input(ptv3.exitPromptText)
+    if option in ptv3.exitOptionList:
         return True
     else:
         return False
